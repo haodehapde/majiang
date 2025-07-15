@@ -9,6 +9,12 @@ class Player:
 
     def draw_tile(self, tile):
         self.hand.append(tile)
+        self.sort_hand()  # 摸牌后自动排序
+
+    def sort_hand(self):
+        # 定义牌的排序规则
+        suit_order = ['万', '条', '筒']
+        self.hand.sort(key=lambda x: (suit_order.index(x[-1]), int(x[:-1])))
 
     def discard_tile(self, tile):
         if tile in self.hand:
@@ -38,3 +44,14 @@ class Player:
             self.melds.append([tile] * 4)
             return True
         return False
+
+    def choose_discard(self):
+        print(f"你的手牌: {self.hand}")
+        while True:
+            tile = input("请输入要出的牌: ")
+            if tile in self.hand:
+                self.hand.remove(tile)
+                self.discards.append(tile)
+                return tile
+            else:
+                print("你没有这张牌，请重新选择。")
